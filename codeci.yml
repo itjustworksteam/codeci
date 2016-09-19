@@ -1,0 +1,3 @@
+os: ubuntu14
+language: java
+script: echo hello && echo world
