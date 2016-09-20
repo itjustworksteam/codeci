@@ -41,9 +41,11 @@ func createDockerFile(codeci CodeCi) string{
 
 
 func main() {
-    if os.Args[1] == "--version" {
-        fmt.Printf("%s version: %s\n", os.Args[0], version)
-        os.Exit(0)
+    if len(os.Args) > 1 {
+        if os.Args[1] == "--version" {
+            fmt.Printf("%s version: %s\n", os.Args[0], version)
+            os.Exit(0)
+        }
     }
 	data, err := ioutil.ReadFile("./codeci.yml")
 	check(err)
