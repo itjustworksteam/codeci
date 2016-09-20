@@ -39,7 +39,12 @@ func main() {
     check(err)
 
     // create the Dockerfile
-    s = []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+    if codeci.Language == "none" {
+        s = []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+    } else {
+        s = []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+    }
+    
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile("./Dockerfile", d1, 0644) 
     check(err)

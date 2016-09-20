@@ -1,5 +1,5 @@
 os: ubuntu14
-language: java
+language: none
 script:
   - echo hello
   - echo world
