@@ -6,6 +6,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"strings"
 	"os/exec"
+    "os"
 )
 
 func check(e error){
@@ -69,9 +70,10 @@ func main() {
 
     // remove all the files
     fmt.Print("removing the temp files...\n")
-    out, err = exec.Command("/bin/bash", "rm ./test.sh ./Dockerfile ./docker-compose.yml ./onlytest.sh").Output()
-    check(err)
-    fmt.Print(string(out))
+    os.Remove("./test.sh")
+    os.Remove("./Dockerfile")
+    os.Remove("./onlytest.sh")
+    os.Remove("./docker-compose.yml")
 
     fmt.Print("done!\n")
 }
