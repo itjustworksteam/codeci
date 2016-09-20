@@ -9,7 +9,7 @@ import (
     "os"
 )
 
-const version = "0.0.2"
+const version = "0.0.4"
 
 func check(e error){
 	if e != nil {
@@ -22,6 +22,11 @@ type CodeCi struct {
 	Language string `yaml:"language"`
     Image string `yaml:"image"`
 	Script []string `yaml:"script"`
+}
+
+func officialImages() string{
+    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go"}
+    return strings.Join(s, "\n")
 }
 
 func createTestScript(codeci CodeCi) string {
@@ -49,6 +54,16 @@ func main() {
     if len(os.Args) > 1 {
         if os.Args[1] == "--version" {
             fmt.Printf("%s version: %s\n", os.Args[0], version)
+            os.Exit(0)
+        }
+        if os.Args[1] == "images" {
+            fmt.Print(officialImages())
+            os.Exit(0)
+        }
+        if os.Args[1] == "--help" {
+            fmt.Printf("usage: %s --> runs the build and search for the codeci.yml\n", os.Args[0])
+            fmt.Printf("usage: %s --version --> show the current version\n", os.Args[0])
+            fmt.Printf("usage: %s images --> show default images\n", os.Args[0])
             os.Exit(0)
         }
     }

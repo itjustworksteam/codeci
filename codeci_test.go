@@ -29,3 +29,8 @@ func TestCreateDockerFile(t *testing.T) {
     dockerfile = createDockerFile(codeci)
     t.Log(dockerfile)
 }
+
+func TestOfficialImages(t *testing.T) {
+    t.Log("TestOfficialImages")
+    t.Log(officialImages())
+}

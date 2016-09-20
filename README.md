@@ -24,13 +24,15 @@ CodeCI is a command line tool used to test your software locally. It works with 
 ## Commands ##
 
 * ```codeci --version``` show the version
+* ```codeci images``` show default images
+* ```codeci --help``` show an help
 
 ## codeci.yml ###
 
 * it's a simple yml file with 3 properties: os, language and script.
 * os -> is the operating system for now it is available only ubuntu14
 * language -> is the language of the project
-* image -> the image from dockerhub ( replace os and language )
+* image -> the image from dockerhub or local ( replace os and language )
 * script -> is the script that the build has to execute
 * os types available: ```ubuntu14```
 * language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go``` or ```none```
