@@ -12,7 +12,7 @@ CodeCI is a command line tool used to test your software locally. It works with 
 ## Install ##
 
 * ```bash install.sh```
-* ```sudo go build -o /usr/local/codeci```
+* ```sudo go build -o /usr/local/bin/codeci```
 
 ## How to use it ##
 

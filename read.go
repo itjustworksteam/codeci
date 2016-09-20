@@ -69,7 +69,7 @@ func main() {
 
     // remove all the files
     fmt.Print("removing the temp files...\n")
-    out, err = exec.Command("/bin/bash", "./remove.sh").Output()
+    out, err = exec.Command("/bin/bash", "rm ./test.sh ./Dockerfile ./docker-compose.yml ./onlytest.sh").Output()
     check(err)
     fmt.Print(string(out))
 
