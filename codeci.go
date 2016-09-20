@@ -9,6 +9,8 @@ import (
     "os"
 )
 
+const version = "0.0.2"
+
 func check(e error){
 	if e != nil {
 		panic(e)
@@ -39,6 +41,10 @@ func createDockerFile(codeci CodeCi) string{
 
 
 func main() {
+    if os.Args[1] == "--version" {
+        fmt.Printf("%s version: %s\n", os.Args[0], version)
+        os.Exit(0)
+    }
 	data, err := ioutil.ReadFile("./codeci.yml")
 	check(err)
     fmt.Printf("reading the codeci.yml file...\n")

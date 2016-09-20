@@ -19,6 +19,10 @@ CodeCI is a command line tool used to test your software locally. It works with 
 * simply in the root directory of your project run ```codeci```
 * attention! It needs a file called ```codeci.yml``` to work
 
+## Commands ##
+
+* ```codeci --version``` show the version
+
 ## codeci.yml ###
 
 * it's a simple yml file with 3 properties: os, language and script.
