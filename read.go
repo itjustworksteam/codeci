@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
 	"strings"
+	"os/exec"
 )
 
 func check(e error){
@@ -13,10 +14,10 @@ func check(e error){
 	}
 }
 
-type T struct {
-	A string
-	B string
-	C []string
+type CodeCi struct {
+	Os string
+	Language string
+	Script []string
 }
 
 func main() {
@@ -24,24 +25,21 @@ func main() {
 	check(err)
 	fmt.Print(string(data))
 
-	m := make(map[string]string)
+	var codeci CodeCi
 
-	err = yaml.Unmarshal([]byte(string(data)), &m)
+	err = yaml.Unmarshal([]byte(string(data)), &codeci)
 	check(err)
 
-	fmt.Printf("\n%v\n", m)
-	fmt.Printf("%v\n", m["os"]);
-	fmt.Printf("%v\n", m["language"])
-	fmt.Printf("%v\n", m["script"])
+	fmt.Printf("\n%v\n", codeci)
 
 	// create the test.sh file
-	s := []string{"#!/bin/bash", "\n", "\n", m["script"], "\n"}
+	s := []string{"#!/bin/bash", "\n", "\n", strings.Join(codeci.Script, " && "), "\n"}
 	d1 := []byte(strings.Join(s, ""))
     err = ioutil.WriteFile("./test.sh", d1, 0644)
     check(err)
 
     // create the Dockerfile
-    s = []string{"FROM therickys93/", m["os"], m["language"], "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+    s = []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile("./Dockerfile", d1, 0644) 
     check(err)
@@ -53,6 +51,14 @@ func main() {
     check(err)
 
     // create the onlytest.sh file
+    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f docker-compose.yml -p ci build", "\n", "docker-compose -f docker-compose.yml -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "docker wait ci_sut_1", "\n", "docker-compose -f docker-compose.yml -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
+    d1 = []byte(strings.Join(s, ""))
+    err = ioutil.WriteFile("./onlytest.sh", d1, 0644)
+    check(err)
+
     // run the script onlytest.sh
+    out, err := exec.Command("/bin/bash", "./onlytest.sh").Output()
+    check(err)
+    fmt.Print(out)
     // remove all the files
 }

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm test.sh Dockerfile docker-compose.yml codeci
+rm test.sh Dockerfile docker-compose.yml codeci onlytest.sh

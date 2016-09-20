@@ -1,3 +1,5 @@
 os: ubuntu14
 language: java
-script: echo hello && echo world
+script:
+  - echo hello
+  - echo world
