@@ -24,4 +24,8 @@ func TestCreateDockerFile(t *testing.T) {
     t.Log("language == java")
     dockerfile = createDockerFile(codeci)
     t.Log(dockerfile)
+    t.Log("image kylef/swiftenv")
+    codeci.Image = "kylef/swiftenv"
+    dockerfile = createDockerFile(codeci)
+    t.Log(dockerfile)
 }

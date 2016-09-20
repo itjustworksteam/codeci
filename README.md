@@ -30,6 +30,7 @@ CodeCI is a command line tool used to test your software locally. It works with 
 * it's a simple yml file with 3 properties: os, language and script.
 * os -> is the operating system for now it is available only ubuntu14
 * language -> is the language of the project
+* image -> the image from dockerhub ( replace os and language )
 * script -> is the script that the build has to execute
 * os types available: ```ubuntu14```
 * language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go``` or ```none```
@@ -66,5 +67,12 @@ script:
   - apt-get install build-essential -y
   - gcc -v
   - make -v
+```
+* image example
+````
+image: ubuntu:14.04
+script:
+  - apt-get update
+  - apt-get install vim -y
 ```
  

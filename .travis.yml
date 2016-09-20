@@ -4,3 +4,4 @@ go:
  - 1.7.1
 script:
   - go test -v
+  - go build

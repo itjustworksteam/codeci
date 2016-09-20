@@ -18,9 +18,10 @@ func check(e error){
 }
 
 type CodeCi struct {
-	Os string
-	Language string
-	Script []string
+	Os string `yaml:"os"`
+	Language string `yaml:"language"`
+    Image string `yaml:"image"`
+	Script []string `yaml:"script"`
 }
 
 func createTestScript(codeci CodeCi) string {
@@ -29,6 +30,10 @@ func createTestScript(codeci CodeCi) string {
 }
 
 func createDockerFile(codeci CodeCi) string{
+    if codeci.Image != "" {
+        s := []string{"FROM ", codeci.Image, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        return strings.Join(s, "")
+    }
     if codeci.Language == "none" {
         s := []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
         return strings.Join(s, "")
