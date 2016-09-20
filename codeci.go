@@ -7,9 +7,10 @@ import (
 	"strings"
 	"os/exec"
     "os"
+    "bufio"
 )
 
-const version = "0.0.4"
+const version = "0.1.0"
 
 func check(e error){
 	if e != nil {
@@ -25,7 +26,7 @@ type CodeCi struct {
 }
 
 func officialImages() string{
-    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go"}
+    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go", ""}
     return strings.Join(s, "\n")
 }
 
@@ -102,9 +103,28 @@ func main() {
 
     // run the script onlytest.sh
     fmt.Print("run the build...\n")
-    out, err := exec.Command("/bin/bash", "./onlytest.sh").Output()
-    check(err)
-    fmt.Print(string(out))
+    cmd := exec.Command("/bin/bash", "./onlytest.sh")
+    cmdReader, err := cmd.StdoutPipe()
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "Error creating pipe", err)
+        return
+    }
+    scanner := bufio.NewScanner(cmdReader)
+    go func() {
+        for scanner.Scan() {
+            fmt.Printf(scanner.Text() + "\n")
+        }
+    }()
+    err = cmd.Start()
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "error starting command", err)
+        return
+    }
+    err = cmd.Wait()
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "error waiting command", err)
+        return
+    }
 
     // remove all the files
     fmt.Print("removing the temp files...\n")
