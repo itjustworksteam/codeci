@@ -21,6 +21,23 @@ type CodeCi struct {
 	Script []string
 }
 
+func createTestScript(codeci CodeCi) string {
+    s := []string{"#!/bin/bash", "\n", "\n", strings.Join(codeci.Script, " && "), "\n"}
+    return strings.Join(s, "")
+}
+
+func createDockerFile(codeci CodeCi) string{
+    if codeci.Language == "none" {
+        s := []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        return strings.Join(s, "")
+    } else {
+        s := []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        return strings.Join(s, "")
+    }
+} 
+
+
+
 func main() {
 	data, err := ioutil.ReadFile("./codeci.yml")
 	check(err)
@@ -34,24 +51,17 @@ func main() {
 
     fmt.Printf("Creating temp files...\n")
 	// create the test.sh file
-	s := []string{"#!/bin/bash", "\n", "\n", strings.Join(codeci.Script, " && "), "\n"}
-	d1 := []byte(strings.Join(s, ""))
+	d1 := []byte(createTestScript(codeci))
     err = ioutil.WriteFile("./test.sh", d1, 0644)
     check(err)
 
     // create the Dockerfile
-    if codeci.Language == "none" {
-        s = []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
-    } else {
-        s = []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
-    }
-    
-    d1 = []byte(strings.Join(s, ""))
+    d1 = []byte(createDockerFile(codeci))
     err = ioutil.WriteFile("./Dockerfile", d1, 0644) 
     check(err)
 
     // create the docker-compose.yml file
-    s = []string{"sut:\n", "  build: .\n", "  dockerfile: Dockerfile", "\n"}
+    s := []string{"sut:\n", "  build: .\n", "  dockerfile: Dockerfile", "\n"}
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile("./docker-compose.yml", d1, 0644)
     check(err)

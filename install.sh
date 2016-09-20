@@ -15,3 +15,4 @@ else
     exit 2
 fi
 go get gopkg.in/yaml.v2
+go test -v
