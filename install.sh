@@ -15,4 +15,5 @@ else
     exit 2
 fi
 go get gopkg.in/yaml.v2
+go get github.com/stretchr/testify/assert
 go test -v
