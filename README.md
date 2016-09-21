@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/itjustworksteam/codeci.svg?branch=master)](https://travis-ci.org/itjustworksteam/codeci)
 
-CodeCI is a command line tool used to test your software locally. It works with docker and requires 64 bit machines.
+CodeCI is a command line tool used to test your software locally. It works with docker and requires 64-bit machines.
 
 ## Requirements ##
 
-* 64 bit machine
+* 64-bit machine
 * docker
 * docker-compose
 * golang

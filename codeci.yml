@@ -1,5 +1,9 @@
 os: ubuntu14
-language: none
+language: go
 script:
-  - echo hello
-  - echo world
+  - export GOPATH=$HONE/gopath
+  - go get gopkg.in/yaml.v2
+  - go test -v
+  - go build -o /usr/local/bin/codeci
+  - codeci --version
+  - codeci --help
