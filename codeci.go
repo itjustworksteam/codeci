@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.0"
+const version = "0.1.1"
 
 func check(e error){
 	if e != nil {
@@ -26,7 +26,7 @@ type CodeCi struct {
 }
 
 func officialImages() string{
-    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go", ""}
+    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go", "therickys93/ubuntu14cpp", ""}
     return strings.Join(s, "\n")
 }
 
@@ -67,12 +67,13 @@ func main() {
             fmt.Printf("usage: %s images --> show default images\n", os.Args[0])
             os.Exit(0)
         }
+        os.Exit(1)
     }
 	data, err := ioutil.ReadFile("./codeci.yml")
 	check(err)
-    fmt.Printf("reading the codeci.yml file...\n")
+    fmt.Printf("reading the codeci.yml file...\n\n")
 	fmt.Print(string(data))
-    fmt.Printf("\n")
+    fmt.Printf("\n\n")
 	var codeci CodeCi
 
 	err = yaml.Unmarshal([]byte(string(data)), &codeci)
@@ -96,7 +97,7 @@ func main() {
     check(err)
 
     // create the onlytest.sh file
-    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f docker-compose.yml -p ci build", "\n", "echo running the script...", "\n", "docker-compose -f docker-compose.yml -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo check if the number is 0 for all good...",  "\n", "docker wait ci_sut_1", "\n", "docker-compose -f docker-compose.yml -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
+    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f docker-compose.yml -p ci build", "\n", "echo running the script...", "\n", "echo -e '\n'", "\n", "docker-compose -f docker-compose.yml -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo -e '\n'", "\n","echo 'BUILD EXIT CODE:'",  "\n", "docker wait ci_sut_1", "\n", "if [ $? == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n", "docker-compose -f docker-compose.yml -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile("./onlytest.sh", d1, 0644)
     check(err)

@@ -16,7 +16,7 @@ func TestCreateTestShFile(t *testing.T) {
 func TestOfficialImages(t *testing.T) {
     t.Log("TestOfficialImages")
     t.Log(officialImages())
-    assert.Equal(t, officialImages(), "therickys93/ubuntu14\ntherickys93/ubuntu14node\ntherickys93/ubuntu14java\ntherickys93/ubuntu14swiftenv\ntherickys93/ubuntu14python\ntherickys93/ubuntu14php\ntherickys93/ubuntu14go\n", "should be equals")
+    assert.Equal(t, officialImages(), "therickys93/ubuntu14\ntherickys93/ubuntu14node\ntherickys93/ubuntu14java\ntherickys93/ubuntu14swiftenv\ntherickys93/ubuntu14python\ntherickys93/ubuntu14php\ntherickys93/ubuntu14go\ntherickys93/ubuntu14cpp\n", "should be equals")
 }
 
 func TestCreateDockerFileWithAssert(t *testing.T) {
