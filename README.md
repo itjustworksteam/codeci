@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/itjustworksteam/codeci.svg?branch=master)](https://travis-ci.org/itjustworksteam/codeci)
 
-CodeCI is a command line tool used to test your software locally. It works with docker and requires 64-bit machines.
+CodeCI is a command line tool used to test your software locally. It works with [docker](http://www.docker.com/) and requires 64-bit machines.
 
 ## Requirements ##
 
@@ -15,6 +15,19 @@ CodeCI is a command line tool used to test your software locally. It works with 
 
 * ```bash install.sh```
 * ```sudo go build -o /usr/local/bin/codeci```
+
+#### Testing Installation ####
+
+* ```mkdir test```
+* ```cd test```
+* create this file and name it ```codeci.yml```:
+```
+image: docker/whalesay
+script:
+   - cowsay Hello CodeCI!
+```
+* run ```codeci``` and you will see a whale that say ```Hello CodeCI!```
+
 
 ## How to use it ##
 
@@ -35,7 +48,7 @@ CodeCI is a command line tool used to test your software locally. It works with 
 * image -> the image from dockerhub or local ( replace os and language )
 * script -> is the script that the build has to execute
 * os types available: ```ubuntu14```
-* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go``` or ```none```
+* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go```, ```cpp``` or ```none```
 * script you can run whatever you want because you have a docker container with sudo privileges
 
 ## Example of codeci.yml ##
@@ -71,10 +84,20 @@ script:
   - make -v
 ```
 * image example
-````
+```
 image: ubuntu:14.04
 script:
   - apt-get update
   - apt-get install vim -y
 ```
- 
+
+* cpp example: ( used for c and c++ )
+```
+os: ubuntu14
+language: cpp
+script:
+  - make -v
+  - gcc -v
+  - cc -v
+  - g++ -v
+```
