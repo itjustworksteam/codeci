@@ -39,6 +39,7 @@ script:
 * ```codeci --version``` show the version
 * ```codeci images``` show default images
 * ```codeci --help``` show an help
+* ```codeci -f codeci.anotherconf.yml``` specify another name for your codeci.yml file. The file has to be named with a prefix of ```codeci``` and suffix of ```.yml```
 
 ## codeci.yml ###
 

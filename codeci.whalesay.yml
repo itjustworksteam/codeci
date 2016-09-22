@@ -1,0 +1,3 @@
+image: docker/whalesay
+script:
+  - cowsay Hello CodeCI!

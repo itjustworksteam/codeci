@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.1"
+const version = "0.1.2"
 
 func check(e error){
 	if e != nil {
@@ -52,26 +52,33 @@ func createDockerFile(codeci CodeCi) string{
 
 
 func main() {
+    filename := "codeci.yml"
     if len(os.Args) > 1 {
         if os.Args[1] == "--version" {
             fmt.Printf("%s version: %s\n", os.Args[0], version)
             os.Exit(0)
-        }
-        if os.Args[1] == "images" {
+        } else if os.Args[1] == "images" {
             fmt.Print(officialImages())
             os.Exit(0)
-        }
-        if os.Args[1] == "--help" {
+        } else if os.Args[1] == "--help" {
             fmt.Printf("usage: %s --> runs the build and search for the codeci.yml\n", os.Args[0])
             fmt.Printf("usage: %s --version --> show the current version\n", os.Args[0])
             fmt.Printf("usage: %s images --> show default images\n", os.Args[0])
             os.Exit(0)
+        } else if os.Args[1] == "-f" {
+            if strings.HasPrefix(os.Args[2], "codeci") && strings.HasSuffix(os.Args[2], ".yml") {
+                filename = os.Args[2]
+            } else {
+                os.Exit(1)
+            }
+        } else {
+            os.Exit(1)
         }
-        os.Exit(1)
     }
-	data, err := ioutil.ReadFile("./codeci.yml")
+    filenames := []string{"./", filename}
+	data, err := ioutil.ReadFile(strings.Join(filenames, ""))
 	check(err)
-    fmt.Printf("reading the codeci.yml file...\n\n")
+    fmt.Printf("reading the provided codeci.yml file...\n\n")
 	fmt.Print(string(data))
     fmt.Printf("\n\n")
 	var codeci CodeCi
