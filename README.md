@@ -49,7 +49,7 @@ script:
 * image -> the image from dockerhub or local ( replace os and language )
 * script -> is the script that the build has to execute
 * os types available: ```ubuntu14```
-* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go```, ```cpp``` or ```none```
+* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go```, ```cpp```, ```scala```, ```ruby``` or ```none```
 * script you can run whatever you want because you have a docker container with sudo privileges
 
 ## Example of codeci.yml ##

@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.2"
+const version = "0.1.3"
 
 func check(e error){
 	if e != nil {
@@ -26,7 +26,7 @@ type CodeCi struct {
 }
 
 func officialImages() string{
-    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go", "therickys93/ubuntu14cpp", ""}
+    s := []string{"therickys93/ubuntu14", "therickys93/ubuntu14node", "therickys93/ubuntu14java", "therickys93/ubuntu14swiftenv", "therickys93/ubuntu14python", "therickys93/ubuntu14php", "therickys93/ubuntu14go", "therickys93/ubuntu14cpp", "therickys93/ubuntu14scala", "therickys93/ubuntu14ruby", ""}
     return strings.Join(s, "\n")
 }
 
