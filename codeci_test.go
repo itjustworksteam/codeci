@@ -10,7 +10,7 @@ func TestCreateTestShFile(t *testing.T) {
     var codeci CodeCi
     codeci.Script = []string{"echo hello", "echo CodeCi"}
     testscript := createTestScript(codeci)
-    assert.Equal(t, testscript, "#!/bin/bash\n\necho hello && echo CodeCi\n", "should be equals")
+    assert.Equal(t, testscript, "#!/bin/bash\n\necho 'Job Node Info: '\necho \n\necho 'uname -a'\nuname -a\necho \n\necho 'df -h'\ndf -h\necho \n\necho 'free -m'\nfree -m\necho \n\necho 'bash --version'\nbash --version\necho \n\necho \n\necho 'running you commands: '\necho hello && echo CodeCi\n", "should be equals")
 }
 
 func TestOfficialImages(t *testing.T) {

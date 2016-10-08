@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.3"
+const version = "0.1.4"
 
 func check(e error){
 	if e != nil {
@@ -31,7 +31,8 @@ func officialImages() string{
 }
 
 func createTestScript(codeci CodeCi) string {
-    s := []string{"#!/bin/bash", "\n", "\n", strings.Join(codeci.Script, " && "), "\n"}
+    jobInfo := []string{"echo 'Job Node Info: '", "echo \n", "echo 'uname -a'", "uname -a", "echo \n", "echo 'df -h'", "df -h", "echo \n", "echo 'free -m'", "free -m", "echo \n", "echo 'bash --version'", "bash --version", "echo \n", "echo \n"}
+    s := []string{"#!/bin/bash", "\n", "\n", strings.Join(jobInfo, "\n") , "\n", "echo 'running you commands: '", "\n", strings.Join(codeci.Script, " && "), "\n"}
     return strings.Join(s, "")
 }
 
