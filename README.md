@@ -37,7 +37,6 @@ script:
 ## Commands ##
 
 * ```codeci --version``` show the version
-* ```codeci images``` show default images
 * ```codeci --help``` show an help
 * ```codeci -f codeci.anotherconf.yml``` specify another name for your codeci.yml file. The file has to be named with a prefix of ```codeci``` and suffix of ```.yml```
 
@@ -49,7 +48,8 @@ script:
 * image -> the image from dockerhub or local ( replace os and language )
 * script -> is the script that the build has to execute
 * os types available: ```ubuntu14```
-* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go```, ```cpp```, ```scala```, ```ruby``` or ```none```
+* language types available: ```java```, ```python```, ```php```, ```swiftenv```, ```node```, ```go```, ```cpp```, ```scala```, ```ruby```, ``àrduino```, ``android```
+ or ```none```
 * script you can run whatever you want because you have a docker container with sudo privileges
 
 ## Example of codeci.yml ##
@@ -101,4 +101,21 @@ script:
   - gcc -v
   - cc -v
   - g++ -v
+```
+
+* arduino example:
+```
+os: ubuntu14
+language: arduino
+script:
+   - ino build
+```
+
+* android example:
+```
+os: ubuntu14
+language: android
+script:
+   - echo "sdk.dir=/opt/android-sdk-linux" > local.properties   ## this line is very important
+   - ./gradlew clean assembleRelease
 ```
