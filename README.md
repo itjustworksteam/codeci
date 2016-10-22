@@ -18,15 +18,7 @@ CodeCI is a command line tool used to test your software locally. It works with 
 
 #### Testing Installation ####
 
-* ```mkdir test```
-* ```cd test```
-* create this file and name it ```codeci.yml```:
-```
-image: docker/whalesay
-script:
-   - cowsay Hello CodeCI!
-```
-* run ```codeci``` and you will see a whale that say ```Hello CodeCI!```
+* run ```codeci test``` and you will see a whale that say ```Hello CodeCI!```
 
 
 ## How to use it ##

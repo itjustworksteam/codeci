@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.4"
+const version = "0.1.5"
 
 func check(e error){
 	if e != nil {
@@ -27,7 +27,7 @@ type CodeCi struct {
 
 func createTestScript(codeci CodeCi) string {
     jobInfo := []string{"echo 'Job Node Info: '", "echo \n", "echo 'uname -a'", "uname -a", "echo \n", "echo 'df -h'", "df -h", "echo \n", "echo 'free -m'", "free -m", "echo \n", "echo 'bash --version'", "bash --version", "echo \n", "echo \n"}
-    s := []string{"#!/bin/bash", "\n", "\n", strings.Join(jobInfo, "\n") , "\n", "echo 'running you commands: '", "\n", strings.Join(codeci.Script, " && "), "\n"}
+    s := []string{"#!/bin/bash", "\n", "\n", strings.Join(jobInfo, "\n") , "\n", "echo 'running your commands: '", "\n", strings.Join(codeci.Script, " && "), "\n"}
     return strings.Join(s, "")
 }
 
@@ -45,10 +45,13 @@ func createDockerFile(codeci CodeCi) string{
     }
 } 
 
-
+func codeCIWhalesay() string {
+    return "image: docker/whalesay\nscript:\n   - cowsay Hello CodeCI!"
+}
 
 func main() {
     filename := "codeci.yml"
+    data := []byte{}
     if len(os.Args) > 1 {
         if os.Args[1] == "--version" {
             fmt.Printf("%s version: %s\n", os.Args[0], version)
@@ -64,13 +67,19 @@ func main() {
             } else {
                 os.Exit(1)
             }
+        } else if os.Args[1] == "test" {
+            // TODO: va testato e poi siamo pronti per rilasciare versione
+            data = []byte(codeCIWhalesay())
         } else {
             os.Exit(1)
         }
     }
     filenames := []string{"./", filename}
-	data, err := ioutil.ReadFile(strings.Join(filenames, ""))
-	check(err)
+    var err error
+    if strings.EqualFold(string(data), "") {
+        data, err = ioutil.ReadFile(strings.Join(filenames, ""))
+        check(err)
+    }
     fmt.Printf("reading the provided codeci.yml file...\n\n")
 	fmt.Print(string(data))
     fmt.Printf("\n\n")

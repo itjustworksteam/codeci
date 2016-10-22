@@ -10,7 +10,7 @@ func TestCreateTestShFile(t *testing.T) {
     var codeci CodeCi
     codeci.Script = []string{"echo hello", "echo CodeCi"}
     testscript := createTestScript(codeci)
-    assert.Equal(t, testscript, "#!/bin/bash\n\necho 'Job Node Info: '\necho \n\necho 'uname -a'\nuname -a\necho \n\necho 'df -h'\ndf -h\necho \n\necho 'free -m'\nfree -m\necho \n\necho 'bash --version'\nbash --version\necho \n\necho \n\necho 'running you commands: '\necho hello && echo CodeCi\n", "should be equals")
+    assert.Equal(t, testscript, "#!/bin/bash\n\necho 'Job Node Info: '\necho \n\necho 'uname -a'\nuname -a\necho \n\necho 'df -h'\ndf -h\necho \n\necho 'free -m'\nfree -m\necho \n\necho 'bash --version'\nbash --version\necho \n\necho \n\necho 'running your commands: '\necho hello && echo CodeCi\n", "should be equals")
 }
 
 func TestCreateDockerFileWithAssert(t *testing.T) {
@@ -29,4 +29,11 @@ func TestCreateDockerFileWithAssert(t *testing.T) {
     dockerfile = createDockerFile(codeci)
     t.Log("image == kylef/swiftenv")
     assert.Equal(t, dockerfile, "FROM kylef/swiftenv\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]\n", "should be equals")
+}
+
+func TestCodeCITest(t *testing.T) {
+    t.Log("Test codeci test");
+    expected := "image: docker/whalesay\nscript:\n   - cowsay Hello CodeCI!"
+    attual := codeCIWhalesay()
+    assert.Equal(t, attual, expected, "should be equals");
 }
