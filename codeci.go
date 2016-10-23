@@ -10,7 +10,7 @@ import (
     "bufio"
 )
 
-const version = "0.1.5"
+const version = "0.1.6"
 
 func check(e error){
 	if e != nil {
@@ -26,7 +26,7 @@ type CodeCi struct {
 }
 
 func createTestScript(codeci CodeCi) string {
-    jobInfo := []string{"echo 'Job Node Info: '", "echo \n", "echo 'uname -a'", "uname -a", "echo \n", "echo 'df -h'", "df -h", "echo \n", "echo 'free -m'", "free -m", "echo \n", "echo 'bash --version'", "bash --version", "echo \n", "echo \n"}
+    jobInfo := []string{"echo 'Job Node Info: '", "echo \n", "echo 'uname -a'", "uname -a", "echo \n", "echo 'df -h'", "df -h", "echo \n", "echo 'free -m'", "free -m", "echo \n", "echo 'bash --version'", "bash --version", "echo \n", "echo 'lscpu'", "lscpu", "echo \n", "echo 'lsb_release -a'", "lsb_release -a", "echo \n", "echo 'service --status-all'", "service --status-all", "echo \n", "echo 'dpkg -l'", "dpkg -l", "echo \n", "echo \n"}
     s := []string{"#!/bin/bash", "\n", "\n", strings.Join(jobInfo, "\n") , "\n", "echo 'running your commands: '", "\n", strings.Join(codeci.Script, " && "), "\n"}
     return strings.Join(s, "")
 }
