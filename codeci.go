@@ -7,10 +7,9 @@ import (
 	"strings"
 	"os/exec"
     "os"
-    "bufio"
 )
 
-const version = "0.1.6"
+const version = "0.1.7"
 
 func check(e error){
 	if e != nil {
@@ -68,7 +67,6 @@ func main() {
                 os.Exit(1)
             }
         } else if os.Args[1] == "test" {
-            // TODO: va testato e poi siamo pronti per rilasciare versione
             data = []byte(codeCIWhalesay())
         } else {
             os.Exit(1)
@@ -114,17 +112,8 @@ func main() {
     // run the script onlytest.sh
     fmt.Print("run the build...\n")
     cmd := exec.Command("/bin/bash", "./onlytest.sh")
-    cmdReader, err := cmd.StdoutPipe()
-    if err != nil {
-        fmt.Fprintln(os.Stderr, "Error creating pipe", err)
-        return
-    }
-    scanner := bufio.NewScanner(cmdReader)
-    go func() {
-        for scanner.Scan() {
-            fmt.Printf(scanner.Text() + "\n")
-        }
-    }()
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
     err = cmd.Start()
     if err != nil {
         fmt.Fprintln(os.Stderr, "error starting command", err)
