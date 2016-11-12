@@ -37,3 +37,31 @@ func TestCodeCITest(t *testing.T) {
     attual := codeCIWhalesay()
     assert.Equal(t, attual, expected, "should be equals");
 }
+
+func TestDockerfileName(t *testing.T) {
+    t.Log("Test Dockerfile name")
+    expected := "Dockerfile"
+    attual := dockerfileName()
+    assert.Equal(t, attual, expected, "should be equals")
+}
+
+func TestDockerComposeName(t *testing.T) {
+    t.Log("Test docker compose name")
+    expected := "docker-compose.yml"
+    attual := dockercomposeName()
+    assert.Equal(t, attual, expected, "should be equals")
+}
+
+func TestOnlyTestName(t *testing.T) {
+    t.Log("Test onlytest name")
+    expected := "onlytest.sh"
+    attual := onlytestName()
+    assert.Equal(t, attual, expected, "should be equals")
+}
+
+func TestTestName(t *testing.T) {
+    t.Log("Test test name")
+    expected := "test.sh"
+    attual := testName()
+    assert.Equal(t, attual, expected, "should be equals")
+}

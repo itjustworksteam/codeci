@@ -24,6 +24,22 @@ type CodeCi struct {
 	Script []string `yaml:"script"`
 }
 
+func dockerfileName() string {
+    return "Dockerfile"
+}
+
+func dockercomposeName() string {
+    return "docker-compose.yml"
+}
+
+func onlytestName() string {
+    return "onlytest.sh"
+}
+
+func testName() string {
+    return "test.sh"
+}
+
 func createTestScript(codeci CodeCi) string {
     jobInfo := []string{"echo 'Job Node Info: '", "echo \n", "echo 'uname -a'", "uname -a", "echo \n", "echo 'df -h'", "df -h", "echo \n", "echo 'free -m'", "free -m", "echo \n", "echo 'bash --version'", "bash --version", "echo \n", "echo 'lscpu'", "lscpu", "echo \n", "echo 'lsb_release -a'", "lsb_release -a", "echo \n", "echo 'service --status-all'", "service --status-all", "echo \n", "echo 'dpkg -l'", "dpkg -l", "echo \n", "echo \n"}
     s := []string{"#!/bin/bash", "\n", "\n", strings.Join(jobInfo, "\n") , "\n", "echo 'running your commands: '", "\n", strings.Join(codeci.Script, " && "), "\n"}
@@ -32,14 +48,14 @@ func createTestScript(codeci CodeCi) string {
 
 func createDockerFile(codeci CodeCi) string{
     if codeci.Image != "" {
-        s := []string{"FROM ", codeci.Image, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        s := []string{"FROM ", codeci.Image, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"", testName(),"\"]", "\n"}
         return strings.Join(s, "")
     }
     if codeci.Language == "none" {
-        s := []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        s := []string{"FROM therickys93/", codeci.Os, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"", testName(),"\"]", "\n"}
         return strings.Join(s, "")
     } else {
-        s := []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]", "\n"}
+        s := []string{"FROM therickys93/", codeci.Os, codeci.Language, "\n", "ADD . /app\nWORKDIR /app\nCMD [\"bash\", \"", testName(),"\"]", "\n"}
         return strings.Join(s, "")
     }
 } 
@@ -89,29 +105,29 @@ func main() {
     fmt.Printf("Creating temp files...\n")
 	// create the test.sh file
 	d1 := []byte(createTestScript(codeci))
-    err = ioutil.WriteFile("./test.sh", d1, 0644)
+    err = ioutil.WriteFile(testName(), d1, 0644)
     check(err)
 
     // create the Dockerfile
     d1 = []byte(createDockerFile(codeci))
-    err = ioutil.WriteFile("./Dockerfile", d1, 0644) 
+    err = ioutil.WriteFile(dockerfileName(), d1, 0644) 
     check(err)
 
     // create the docker-compose.yml file
-    s := []string{"sut:\n", "  build: .\n", "  dockerfile: Dockerfile", "\n"}
+    s := []string{"sut:\n", "  build: .\n", "  dockerfile: ", dockerfileName(), "\n"}
     d1 = []byte(strings.Join(s, ""))
-    err = ioutil.WriteFile("./docker-compose.yml", d1, 0644)
+    err = ioutil.WriteFile(dockercomposeName(), d1, 0644)
     check(err)
 
     // create the onlytest.sh file
     s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f docker-compose.yml -p ci build", "\n", "echo running the script...", "\n", "echo -e '\n'", "\n", "docker-compose -f docker-compose.yml -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo -e '\n'", "\n","echo 'BUILD EXIT CODE:'",  "\n", "docker wait ci_sut_1", "\n", "if [ $(docker wait ci_sut_1) == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n", "docker-compose -f docker-compose.yml -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
     d1 = []byte(strings.Join(s, ""))
-    err = ioutil.WriteFile("./onlytest.sh", d1, 0644)
+    err = ioutil.WriteFile(onlytestName(), d1, 0644)
     check(err)
 
     // run the script onlytest.sh
     fmt.Print("run the build...\n")
-    cmd := exec.Command("/bin/bash", "./onlytest.sh")
+    cmd := exec.Command("/bin/bash", onlytestName())
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     err = cmd.Start()
@@ -127,10 +143,14 @@ func main() {
 
     // remove all the files
     fmt.Print("removing the temp files...\n")
-    os.Remove("./test.sh")
-    os.Remove("./Dockerfile")
-    os.Remove("./onlytest.sh")
-    os.Remove("./docker-compose.yml")
+    // remove test file
+    os.Remove(testName())
+    // remove Dockerfile
+    os.Remove(dockerfileName())
+    // remove only test file
+    os.Remove(onlytestName())
+    // remove docker compose file
+    os.Remove(dockercomposeName())
 
     fmt.Print("done!\n")
 }
