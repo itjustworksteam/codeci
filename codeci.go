@@ -9,7 +9,7 @@ import (
     "os"
 )
 
-const version = "0.1.7"
+const version = "0.1.8"
 
 func check(e error){
 	if e != nil {
