@@ -25,19 +25,19 @@ type CodeCi struct {
 }
 
 func dockerfileName() string {
-    return "Dockerfile"
+    return "Dockerfile.codeci"
 }
 
 func dockercomposeName() string {
-    return "docker-compose.yml"
+    return "docker-compose.codeci.yml"
 }
 
 func onlytestName() string {
-    return "onlytest.sh"
+    return "onlytest.codeci.sh"
 }
 
 func testName() string {
-    return "test.sh"
+    return "test.codeci.sh"
 }
 
 func createTestScript(codeci CodeCi) string {
@@ -120,7 +120,7 @@ func main() {
     check(err)
 
     // create the onlytest.sh file
-    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f docker-compose.yml -p ci build", "\n", "echo running the script...", "\n", "echo -e '\n'", "\n", "docker-compose -f docker-compose.yml -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo -e '\n'", "\n","echo 'BUILD EXIT CODE:'",  "\n", "docker wait ci_sut_1", "\n", "if [ $(docker wait ci_sut_1) == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n", "docker-compose -f docker-compose.yml -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
+    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f ", dockercomposeName() ," -p ci build", "\n", "echo running the script...", "\n", "echo -e '\n'", "\n", "docker-compose -f ", dockercomposeName(), " -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo -e '\n'", "\n","echo 'BUILD EXIT CODE:'",  "\n", "docker wait ci_sut_1", "\n", "if [ $(docker wait ci_sut_1) == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n", "docker-compose -f ", dockercomposeName(), " -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile(onlytestName(), d1, 0644)
     check(err)

@@ -20,15 +20,15 @@ func TestCreateDockerFileWithAssert(t *testing.T) {
     codeci.Language = "java"
     dockerfile := createDockerFile(codeci)
     t.Log("language == java")
-    assert.Equal(t, dockerfile, "FROM therickys93/ubuntu14java\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]\n", "should be equals")
+    assert.Equal(t, dockerfile, "FROM therickys93/ubuntu14java\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.codeci.sh\"]\n", "should be equals")
     codeci.Language = "none"
     dockerfile = createDockerFile(codeci)
     t.Log("language == none")
-    assert.Equal(t, dockerfile, "FROM therickys93/ubuntu14\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]\n", "should be equals")
+    assert.Equal(t, dockerfile, "FROM therickys93/ubuntu14\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.codeci.sh\"]\n", "should be equals")
     codeci.Image = "kylef/swiftenv"
     dockerfile = createDockerFile(codeci)
     t.Log("image == kylef/swiftenv")
-    assert.Equal(t, dockerfile, "FROM kylef/swiftenv\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.sh\"]\n", "should be equals")
+    assert.Equal(t, dockerfile, "FROM kylef/swiftenv\nADD . /app\nWORKDIR /app\nCMD [\"bash\", \"test.codeci.sh\"]\n", "should be equals")
 }
 
 func TestCodeCITest(t *testing.T) {
@@ -40,28 +40,28 @@ func TestCodeCITest(t *testing.T) {
 
 func TestDockerfileName(t *testing.T) {
     t.Log("Test Dockerfile name")
-    expected := "Dockerfile"
+    expected := "Dockerfile.codeci"
     attual := dockerfileName()
     assert.Equal(t, attual, expected, "should be equals")
 }
 
 func TestDockerComposeName(t *testing.T) {
     t.Log("Test docker compose name")
-    expected := "docker-compose.yml"
+    expected := "docker-compose.codeci.yml"
     attual := dockercomposeName()
     assert.Equal(t, attual, expected, "should be equals")
 }
 
 func TestOnlyTestName(t *testing.T) {
     t.Log("Test onlytest name")
-    expected := "onlytest.sh"
+    expected := "onlytest.codeci.sh"
     attual := onlytestName()
     assert.Equal(t, attual, expected, "should be equals")
 }
 
 func TestTestName(t *testing.T) {
     t.Log("Test test name")
-    expected := "test.sh"
+    expected := "test.codeci.sh"
     attual := testName()
     assert.Equal(t, attual, expected, "should be equals")
 }
