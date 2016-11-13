@@ -9,7 +9,7 @@ import (
     "os"
 )
 
-const version = "0.1.8"
+const version = "0.1.9"
 
 func check(e error){
 	if e != nil {
@@ -75,6 +75,7 @@ func main() {
             fmt.Printf("usage: %s --> runs the build and search for the codeci.yml\n", os.Args[0])
             fmt.Printf("usage: %s --version --> show the current version\n", os.Args[0])
             fmt.Printf("usage: %s -f codeci.whateveryouwant.yml --> specify the name of your codeci file\n", os.Args[0])
+            fmt.Printf("usage: %s test --> test the installation\n", os.Args[0])
             os.Exit(0)
         } else if os.Args[1] == "-f" {
             if strings.HasPrefix(os.Args[2], "codeci") && strings.HasSuffix(os.Args[2], ".yml") {
