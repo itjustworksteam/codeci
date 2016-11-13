@@ -1,4 +1,7 @@
+sudo: required
 language: go
+services:
+  - docker
 go:
  - 1.6.1
  - 1.7.1
@@ -9,3 +12,4 @@ script:
   - go build -o codeci
   - ./codeci --version
   - ./codeci --help
+  - ./codeci test
