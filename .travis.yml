@@ -13,3 +13,4 @@ script:
   - ./codeci --version
   - ./codeci --help
   - ./codeci test
+  - ./codeci 
