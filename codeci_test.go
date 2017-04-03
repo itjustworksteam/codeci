@@ -10,7 +10,7 @@ func TestCreateTestShFile(t *testing.T) {
     var codeci CodeCi
     codeci.Script = []string{"echo hello", "echo CodeCi"}
     testscript := createTestScript(codeci)
-    assert.Equal(t, testscript, "#!/bin/bash\n\necho 'Job Node Info: '\necho \n\necho 'uname -a'\nuname -a\necho \n\necho 'df -h'\ndf -h\necho \n\necho 'free -m'\nfree -m\necho \n\necho 'bash --version'\nbash --version\necho \n\necho 'lscpu'\nlscpu\necho \n\necho 'lsb_release -a'\nlsb_release -a\necho \n\necho 'service --status-all'\nservice --status-all\necho \n\necho 'dpkg -l'\ndpkg -l\necho \n\necho \n\necho 'running your commands: '\nset -ex\necho hello\necho CodeCi\n", "should be equals")
+    assert.Equal(t, testscript, "#!/bin/bash\n\necho 'Job Node Info: '\necho \n\necho 'uname -a'\nuname -a\necho \n\necho 'df -h'\ndf -h\necho \n\necho 'free -m'\nfree -m\necho \n\necho 'bash --version'\nbash --version\necho \n\necho 'lscpu'\nlscpu\necho \n\necho 'lsb_release -a'\nlsb_release -a\necho \n\necho 'service --status-all'\nservice --status-all\necho \n\necho 'dpkg -l'\ndpkg -l\necho \n\necho \n\necho 'running your commands: '\nsleep 1\nset -ex\necho hello\necho CodeCi\n", "should be equals")
 }
 
 func TestCreateDockerFileWithAssert(t *testing.T) {
