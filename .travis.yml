@@ -14,5 +14,5 @@ script:
   - ./codeci --help
   - ./codeci test
   - ./codeci 
-  - rn codeci
+  - rm codeci
   - make
