@@ -21,6 +21,7 @@ deploy:
   api_key:
     secure: r94ToCXWm7RBu0iXCI780BwS1gTqaGbcgvwInpykNw6K/8wUoLmOcPTjOs4bMckzUpjgGrjRKe96t8boSPBWX07R02MXD4dxXuSAHdeUrE04SPRPqxSI4goe+h1FZTcyYG7183R8HH0Ao43PtM6QnoUMxIUWzWc1CkBxZOFcA1OCwmhR4bl+sEtfYl4ieMfqAyhEMreLuvmQ9DiGwttystDNggRhF4xo6HP4oC5SAmuP7qx0Ev2WMoXR/kHLpjObp2XCe9KusLok8Ps91hw4JMLaCki/dOp+4lW7jlAWWA1LNFBoM2ogS7FuCr7wHCApME9zSsWhtWKy4bH5C0SGy1gLZdLEJKOSzuHJn/FnTOzd1vmLLZFJD+ZA1xskT3of+cGQyV7X5EPFWTzlxRQCK7MrHY27hM59xOU4iV/ZlVjttYX0yBjXYT1QVFsW5tSXP+wp/bH6sTeA/gM67zP9LnsDfihXgcYofSq6LeG+dYr7VuhoBMjwctVSn+mPKXA6/q7DdqkI2Y/j4qCU0hOomXUwvNRjZlmbEM1cCoP5w+JHr8sAn5XZCWTxoc66hqR80T1qRVgS+EmBXEu/8ErMKs4IqKd1WZehSB92NI8Y6XGEv4OMrgYMImf/nw5KHhE+GXYzyWZp2zudF30XNIevqMrfVBkiyXXi4wmBOJT6PMc=
   file: 'build/darwin_amd64.tar.gz'
+  skip_cleanup: true
   on:
     branch: master
     repo: itjustworksteam/codeci
