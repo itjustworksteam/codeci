@@ -16,6 +16,8 @@ script:
 - ./codeci
 - rm codeci
 - make
+after_success:
+- sh set_tags.sh
 deploy:
   provider: releases
   api_key:
