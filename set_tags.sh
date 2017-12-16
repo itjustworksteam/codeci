@@ -9,7 +9,7 @@ if [ "$TRAVIS_BRANCH" = "$BRANCH" ]; then
 	    git config --global user.name "Travis"
 
 	    # Add tag and push to master.
-	    git tag -a 0.2.${TRAVIS_BUILD_NUMBER}_${TRAVIS_GO_VERSION} -m "Travis build $TRAVIS_BUILD_NUMBER pushed a tag."
+	    git tag -a 0.2.1.${TRAVIS_BUILD_NUMBER}_go${TRAVIS_GO_VERSION} -m "Travis build $TRAVIS_BUILD_NUMBER pushed a tag."
 	    git push origin --tags
 	    git fetch origin
 
