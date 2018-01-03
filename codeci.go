@@ -121,7 +121,21 @@ func main() {
     check(err)
 
     // create the onlytest.sh file
-    s = []string{"#!/bin/bash", "\n", "\n", "docker-compose -f ", dockercomposeName() ," -p ci build", "\n", "echo running the script...", "\n", "echo -e '\n'", "\n", "docker-compose -f ", dockercomposeName(), " -p ci up -d", "\n", "docker logs -f ci_sut_1", "\n", "echo -e '\n'", "\n","echo 'BUILD EXIT CODE:'",  "\n", "docker wait ci_sut_1", "\n", "if [ $(docker wait ci_sut_1) == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n", "docker-compose -f ", dockercomposeName(), " -p ci kill", "\n", "docker rm ci_sut_1", "\n", "docker rmi ci_sut"}
+    s = []string{"#!/bin/bash", "\n", "\n", 
+        "docker-compose -f ", dockercomposeName() ," -p ci build", "\n", 
+        "echo running the script...", "\n", 
+        "echo -e '\n'", "\n", 
+        "docker-compose -f ", dockercomposeName(), " -p ci up -d", "\n", 
+        "docker logs -f ci_sut_1", "\n", 
+        "echo -e '\n'", "\n",
+        "echo 'BUILD EXIT CODE:'",  "\n", 
+        "docker wait ci_sut_1", "\n", 
+        "EXIT_STATUS=$(docker wait ci_sut_1)", "\n",
+        "if [ $EXIT_STATUS == 0 ]; then echo -e '\nBUILD SUCCESS\n'; else echo -e '\nBUILD FAILED\n'; fi", "\n",
+        "docker-compose -f ", dockercomposeName(), " -p ci kill", "\n", 
+        "docker rm ci_sut_1", "\n", 
+        "docker rmi ci_sut", "\n",
+        "exit $EXIT_STATUS"}
     d1 = []byte(strings.Join(s, ""))
     err = ioutil.WriteFile(onlytestName(), d1, 0644)
     check(err)
@@ -132,14 +146,13 @@ func main() {
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     err = cmd.Start()
+    exitstatus := 0
     if err != nil {
-        fmt.Fprintln(os.Stderr, "error starting command", err)
-        return
+        exitstatus = 1
     }
     err = cmd.Wait()
     if err != nil {
-        fmt.Fprintln(os.Stderr, "error waiting command", err)
-        return
+        exitstatus = 2
     }
 
     // remove all the files
@@ -154,4 +167,6 @@ func main() {
     os.Remove(dockercomposeName())
 
     fmt.Print("done!\n")
+
+    os.Exit(exitstatus)
 }
