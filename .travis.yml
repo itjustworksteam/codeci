@@ -24,6 +24,7 @@ deploy:
   file: 
     - 'build/darwin_amd64.tar.gz'
     - 'build/linux_amd64.tar.gz'
+    - 'build/windows_amd64.zip'
   skip_cleanup: true
   on:
     branch: master
